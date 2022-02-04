@@ -1,0 +1,20 @@
+- name: "Create directory {{ USB_MOUNT_POINT }} to mount usb stick"
+  file:
+    path: "{{ USB_MOUNT_POINT }}"
+    state: directory
+
+- name: Get the UUID of usb stick
+  delegate_facts: true
+  shell: | 
+    blkid /dev/sda1 | awk -F'"' '{print $2}'
+  register: uuid
+
+- name: Mount USB stick by UUID
+  ansible.posix.mount:
+    src: "UUID={{ uuid.stdout }}"
+    path: "{{ USB_MOUNT_POINT }}"
+    fstype: vfat
+    opts: defaults
+    dump: 0
+    passno: 2
+    state: mounted

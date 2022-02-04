@@ -1,0 +1,14 @@
+## 00-prerequisites.yaml
+## ansible-playbook 00-prerequisites.yaml -i inventory/hosts.ini
+---
+- name: Prerequisites
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  vars_prompt:
+    - name: DEFAULT_PASSWORD
+      prompt: "Enter default user password"
+      private: yes
+      default: "password"
+  roles:
+    - role: prerequisites

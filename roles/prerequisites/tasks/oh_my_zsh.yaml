@@ -1,0 +1,41 @@
+- name: Install packages for Oh My SSH
+  ansible.builtin.apt: 
+    name: 
+      - "zsh"
+      - "fonts-powerline"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+
+- name: "Check if Oh My Zsh is present for {{ DEFAULT_USER }}"
+  ansible.builtin.stat:
+    path: "/home/{{ DEFAULT_USER }}/.oh-my-zsh"
+  register: oh_my_zsh_folder
+
+- name: "Install Oh My Zsh for {{ DEFAULT_USER }}"
+  when: not oh_my_zsh_folder.stat.exists
+  ansible.builtin.shell: '/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+  changed_when: false
+  become: yes
+  become_user: "{{ DEFAULT_USER }}"
+
+- name: "Check if Oh My Zsh is present for {{ ansible_user }}"
+  ansible.builtin.stat:
+    path: "/home/{{ ansible_user }}/.oh-my-zsh"
+  register: oh_my_zsh_folder
+
+- name: "Install Oh My Zsh for {{ ansible_user }}"
+  when: not oh_my_zsh_folder.stat.exists
+  ansible.builtin.shell: '/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+  changed_when: false
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Set Zsh default shell for users
+  become: yes
+  user:
+    name: '{{ item }}'
+    shell: /bin/zsh
+  loop:
+    - "{{ ansible_user }}"
+    - "{{ DEFAULT_USER }}"

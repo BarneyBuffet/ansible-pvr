@@ -1,0 +1,26 @@
+- name: Allow SSH connections - Anti lockout
+  ufw:
+    rule: allow
+    name: OpenSSH
+    comment: "ALLOW SSH port - Anti lockout"
+  notify: ufw reload
+
+- name: Allow all access from RFC1918 networks
+  community.general.ufw:
+    rule: allow
+    src: '{{ item }}'
+    comment: Allow RFC1918 networks
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+  notify: ufw reload
+
+- name: Deny all other incoming traffic by default
+  ufw:
+    rule: deny
+    direction: in
+    log: yes
+    state: enabled
+    comment: "DENY incoming traffic"
+  notify: ufw reload

@@ -2,3 +2,5 @@ TZ: 'UTC'
 ANSIBLE_USER: "ansible"
 INIT_PACKAGES: [ 'bash', 'curl', 'wget', 'net-tools', 'build-essential', 'git']
 DEFAULT_USER: "default"
+DEFAULT_USER_PUB: "** replace with contents of `cat ~/.ssh/id_rsa.pub **"
+USB_MOUNT_POINT: "/media/local_usb"

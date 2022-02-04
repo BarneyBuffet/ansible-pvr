@@ -1,0 +1,16 @@
+- name: Set time zone for server
+  community.general.timezone:
+    name: "{{ TZ }}"
+
+- name: "Set hostname {{ hostname }} in /etc/hostname"
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+  notify: server reboot
+    
+- name: "Add hostname {{ hostname }} in /etc/hosts"
+  ansible.builtin.lineinfile:
+    path: '/etc/hosts'
+    state: present
+    regexp: '^127\.0\.0\.1[ \t]+localhost'
+    line: '127.0.0.1 localhost {{ hostname }}'
+  notify: server reboot

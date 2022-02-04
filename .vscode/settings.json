@@ -1,8 +1,17 @@
 {
     "cSpell.words": [
+        "autoclean",
+        "autoremove",
+        "blkid",
+        "fstype",
         "lineinfile",
         "NOPASSWD",
+        "passno",
         "playbook",
-        "vars"
+        "posix",
+        "powerline",
+        "timezone",
+        "vars",
+        "vfat"
     ]
 }

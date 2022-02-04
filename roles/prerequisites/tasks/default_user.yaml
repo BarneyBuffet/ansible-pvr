@@ -1,0 +1,14 @@
+- name: "Add default user {{ DEFAULT_USER }}"
+  ansible.builtin.user:
+    name: "{{ DEFAULT_USER }}"
+    password: "{{ 'DEFAULT_PASSWORD' | password_hash('sha512') }}"
+    update_password: on_create
+    shell: /bin/bash
+    append: yes
+    groups: sudo
+
+- name: "Set authorized key for default user {{ DEFAULT_USER }}"
+  ansible.posix.authorized_key:
+    user: "{{ DEFAULT_USER }}"
+    state: present
+    key: "{{ DEFAULT_USER_PUB }}"
