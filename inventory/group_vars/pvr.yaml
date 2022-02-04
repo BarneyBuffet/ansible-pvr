@@ -1,0 +1,4 @@
+TZ: 'UTC'
+ANSIBLE_USER: "ansible"
+INIT_PACKAGES: [ 'bash', 'curl', 'wget', 'net-tools', 'build-essential', 'git']
+DEFAULT_USER: "default"

@@ -1,0 +1,8 @@
+# ansible.yaml
+# ansible-playbook 00-ansible.yaml --ask-become-pass --inventory inventory/hosts.ini 
+---
+- hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: ansible
