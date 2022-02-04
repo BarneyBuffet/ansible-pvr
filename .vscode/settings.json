@@ -6,6 +6,7 @@
         "fstype",
         "lineinfile",
         "NOPASSWD",
+        "ovpn",
         "passno",
         "playbook",
         "posix",

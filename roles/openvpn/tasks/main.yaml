@@ -1,0 +1,68 @@
+- name: Install OpenVPN and Unzip packages
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+  with_items:
+    - openvpn
+    - unzip
+
+- name: Create Downloads folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "sudo"
+  with_items:
+    - '/home/{{ ansible_user }}/Downloads'
+    - '/home/{{ ansible_user }}/Downloads/PIA'
+
+- name: Download and unzip PIA openvpn config
+  ansible.builtin.unarchive:
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
+    dest: /home/{{ ansible_user }}/Downloads/PIA
+    remote_src: yes
+
+- name: Copy PIA OpenVPN config file to system config
+  ansible.builtin.copy:
+    src: "/home/{{ ansible_user }}/Downloads/PIA/{{ PIA_CONFIG }}.ovpn"
+    dest: /etc/openvpn/pia.conf
+    remote_src: true
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  notify: server reboot
+
+- name: Change authentication to login.conf
+  ansible.builtin.lineinfile:
+    path: /etc/openvpn/pia.conf
+    state: present
+    regexp: "^auth-user-pass"
+    line: "auth-user-pass login.conf"
+  notify: server reboot
+
+- name: Copy login.conf to /etc/openvpn/login.conf
+  ansible.builtin.template:
+    src: login.conf
+    dest: /etc/openvpn/login.conf
+    owner: root
+    group: root
+    mode: 400
+  notify: server reboot
+
+- name: Autostart OpenVPN
+  ansible.builtin.lineinfile:
+    path: /etc/default/openvpn
+    state: present
+    regexp: '^#AUTOSTART="home office"'
+    line: 'AUTOSTART="pia"'
+  notify: server reboot
+
+- name: Clean up PIA directory
+  file:
+    state: absent
+    path: /home/{{ ansible_user }}/Downloads/PIA
+
+## References
+## https://medium.com/@cubxi/connect-to-private-internet-access-pia-vpn-with-openvpn-on-ubuntu-3f8091d61f24

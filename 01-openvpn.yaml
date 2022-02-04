@@ -1,0 +1,9 @@
+## 01-openvpn.yaml
+## ansible-playbook 01-openvpn.yaml -i inventory/hosts.ini
+---
+- name: OpenVpn
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: openvpn

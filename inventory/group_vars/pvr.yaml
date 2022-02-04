@@ -4,3 +4,6 @@ INIT_PACKAGES: [ 'bash', 'curl', 'wget', 'net-tools', 'build-essential', 'git']
 DEFAULT_USER: "default"
 DEFAULT_USER_PUB: "** replace with contents of `cat ~/.ssh/id_rsa.pub **"
 USB_MOUNT_POINT: "/media/local_usb"
+PIA_CONFIG: "** Replace with VPN Server Location **"
+PIA_USERNAME: "** Replace with PIA VPN Access Username **"
+PIA_PASSWORD: "** Replace with PIA VPN Access Password **"
