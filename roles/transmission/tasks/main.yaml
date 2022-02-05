@@ -1,0 +1,77 @@
+- name: Install Transmission package
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+  with_items:
+    - transmission-daemon
+
+- name: Make sure transmission daemon is not running before modifying config
+  service:
+    name: transmission-daemon
+    state: stopped
+  ignore_errors: true
+
+- name: Allow Transmission Web
+  community.general.ufw:
+    rule: allow
+    port: '{{ RPC_PORT }}'
+    proto: tcp
+    comment: Allow Transmission Web
+  notify: ufw reload
+
+- name: "Set setuid {{ PVR_UID }} in /etc/init/transmission-daemon.conf"
+  ansible.builtin.lineinfile:
+    path: '/etc/init/transmission-daemon.conf'
+    state: present
+    regexp: '^setuid'
+    line: 'setuid {{ PVR_UID }}'
+
+- name: "Set setgid {{ PVR_GID }} in /etc/init/transmission-daemon.conf"
+  ansible.builtin.lineinfile:
+    path: '/etc/init/transmission-daemon.conf'
+    state: present
+    regexp: '^setgid'
+    line: 'setgid {{ PVR_GID }}'
+
+- name: "Copy Transmission configuration to /home/{{ PVR_USERNAME }}/.config/transmission-daemon/settings.json"
+  template:
+    src: settings.json.j2
+    dest: /home/{{ PVR_USERNAME }}/.config/transmission-daemon/settings.json
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+
+# - name: "Change transmission-daemon systemd user"
+#   ini_file:
+#     path: /etc/systemd/system/transmission-daemon.service.d/run-as-user.conf
+#     section: Service
+#     option: User
+#     value: "{{ PVR_UID }}"
+
+# - name: "Change transmission-daemon systemd timer group"
+#   ini_file:
+#     path: /etc/systemd/system/transmission-daemon.service.d/group.conf
+#     section: Service
+#     option: Group
+#     value: "{{ PVR_GID }}"
+
+- name: Add users to transmission group
+  user:
+    name: "{{ item }}"
+    groups: debian-transmission
+    append: yes
+  with_items: 
+    - "{{ DEFAULT_USER }}"
+    - "{{ PVR_USERNAME }}"
+
+- name: Add users to transmission group
+  user:
+    name: debian-transmission
+    groups: " {{ PVR_GID }}" 
+    append: yes
+
+- name: Start transmission daemon now config written
+  systemd:
+    name: transmission-daemon
+    state: started

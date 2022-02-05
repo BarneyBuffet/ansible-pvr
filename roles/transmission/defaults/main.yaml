@@ -1,0 +1,182 @@
+---
+## BANDWIDTH
+## =========
+## alt-speed-enabled: Boolean (default = false, aka 'Turtle Mode')
+## Note: Clicking the "Turtle" in the gui when the scheduler is enabled, will only temporarily remove the scheduled limit until the next cycle.
+ALT_SPEED_ENABLED: true
+## alt-speed-up: Number (KB/s, default = 50)
+ALT_SPEED_UP: 50
+## alt-speed-down: Number (KB/s, default = 50)
+ALT_SPEED_DOWN: 50
+## speed-limit-down: Number (KB/s, default = 100)
+SPEED_LIMIT_DOWN: 100
+## speed-limit-down-enabled: Boolean (default = false)
+SPEED_LIMIT_DOWN_ENABLED: false
+## speed-limit-up: Number (KB/s, default = 100)
+SPEED_LIMIT_UP: 2
+## speed-limit-up-enabled: Boolean (default = false)
+SPEED_LIMIT_UP_ENABLED: true
+## upload-slots-per-torrent: Number (default = 14)
+UPLOAD_SLOTS_PER_TORRENT: 1
+
+## BLOCKLISTS
+## ==========
+## blocklist-url: String (default = http://www.example.com/blocklist)
+BLOCKLIST_URL: "https://github.com/Naunter/BT_BlockLists/releases/download/master/bt_blocklists.gz"
+## blocklist-enabled: Boolean (default = false)
+BLOCKLIST_ENABLED: true
+
+## FILES AND LOCATIONS
+## ===================
+## download-dir: String (default = default locations)
+DOWNLOAD_DIR: /media/Downloads
+## incomplete-dir: String (default = default locations) Directory to keep files in until torrent is complete.
+INCOMPLETE_DIR: /media/Downloads/incomplete
+## incomplete-dir-enabled: Boolean (default = false) When enabled, new torrents will download the files to incomplete-dir. When complete, the files will be moved to download-dir.
+INCOMPLETE_DIR_ENABLED: true
+## preallocation: Number (0 = Off, 1 = Fast, 2 = Full (slower but reduces disk fragmentation), default = 1)
+PREALLOCATION: 1
+## rename-partial-files: Boolean (default = true) Postfix partially downloaded files with ".part".
+RENAME_PARTIAL_FILES: true
+## start-added-torrents: Boolean (default = true) Start torrents as soon as they are added.
+START_ADDED_TORRENTS: true
+## trash-original-torrent-files: Boolean (default = false) Delete torrents added from the watch directory.
+TRASH_ORIGINAL_TORRENT_FILES: true
+## umask: Number (default = 18) Sets transmission's file mode creation mask. See the umask(2) manpage for more information. Users who want their saved torrents to be world-writable may want to set this value to 0. Bear in mind that the json markup language only accepts numbers in base 10, so the standard umask(2) octal notation "022" is written in settings.json as 18.
+UMASK: 18
+# watch-dir: String
+WATCH_DIR: /media/Downloads/watch
+## watch-dir-enabled: Boolean (default = false) Watch a directory for torrent files and add them to transmission.
+## Note: When watch-dir-enabled is true, only the transmission-daemon, transmission-gtk, and transmission-qt applications will monitor watch-dir for new .torrent files and automatically load them.
+WATCH_DIR_ENABLED: true
+
+## MISC
+## ====
+## cache-size-mb: Size (default = 4), in megabytes, to allocate for Transmission's memory cache. The cache is used to help batch disk IO together, so increasing the cache size can be used to reduce the number of disk reads and writes. Default is 2 if configured with --enable-lightweight.
+CACHE_SIZE_MB: 4
+## dht-enabled: Boolean (default = true) Enable Distributed Hash Table (DHT).
+DHT_ENABLED: true
+## encryption: Number (0 = Prefer unencrypted connections, 1 = Prefer encrypted connections, 2 = Require encrypted connections; default = 1) Encryption preference. Encryption may help get around some ISP filtering, but at the cost of slightly higher CPU use.
+ENCRYPTION: 1
+## lazy-bitfield-enabled: Boolean (default = true) May help get around some ISP filtering. Vuze specification.
+LAZY_BITFIELD_ENABLED: true
+## lpd-enabled: Boolean (default = false) Enable Local Peer Discovery (LPD).
+LPD_ENABLED: false
+## message-level: Number (0 = None, 1 = Error, 2 = Info, 3 = Debug, default = 2) Set verbosity of transmission messages.
+MESSAGE_LEVEL: 2
+## pex-enabled: Boolean (default = true) Enable [http://en.wikipedia.org/wiki/Peer_exchange Peer Exchange (PEX)].
+PEX_ENABLED: true
+## prefetch-enabled: Boolean (default = true). When enabled, Transmission will hint to the OS which piece data it's about to read from disk in order to satisfy requests from peers. On Linux, this is done by passing POSIX_FADV_WILLNEED to posix_fadvise(). On OS X, this is done by passing F_RDADVISE to fcntl(). This defaults to false if configured with --enable-lightweight.
+PREFETCH_ENABLED: true
+## scrape-paused-torrents-enabled: Boolean (default = true)
+SCRAPE_PAUSED_TORRENTS_ENABLED: true
+## script-torrent-done-enabled: Boolean (default = false) Run a script at torrent completion.
+SCRIPT_TORRENT_DONE_ENABLED: false
+## script-torrent-done-filename: String (default = "") Path to script.
+SCRIPT_TORRENT_DONE_FILENAME: ""
+## utp-enabled: Boolean (default = true) Enable Micro Transport Protocol (µTP)
+UTP_ENABLED: true
+
+## PEERS
+## =====
+## bind-address-ipv4: String (default = "0.0.0.0") Where to listen for peer connections.
+BIND_ADDRESS_IPV4: "0.0.0.0"
+## bind-address-ipv6: String (default = "::") Where to listen for peer connections.
+BIND_ADDRESS_IPV6: "::"
+## peer-congestion-algorithm: String. This is documented on http://www.pps.jussieu.fr/~jch/software/bittorrent/tcp-congestion-control.html.
+PEER_CONGESTION_ALGORITHM: ""
+## peer-id-ttl-hours: Number (default = 6) Recycle the peer id used for public torrents after N hours of use.
+PEER_ID_TTL_HOURS: 6
+## peer-limit-global: Number (default = 240)
+PEER_LIMIT_GLOBAL: 240
+## peer-limit-per-torrent: Number (default = 60)
+PEER_LIMIT_PER_TORRENT: 60
+## peer-socket-tos: String (default = "default") Set the Type-Of-Service (TOS) parameter for outgoing TCP packets. Possible values are "default", "lowcost", "throughput", "lowdelay" and "reliability". The value "lowcost" is recommended if you're using a smart router, and shouldn't harm in any case.
+PEER_SOCKET_TOS: "default"
+
+## PEER PORT
+## =========
+## peer-port: Number (default = 51413)
+PEER_PORT: 51413
+## peer-port-random-high: Number (default = 65535)
+PEER_PORT_RANDOM_HIGH: 65535
+## peer-port-random-low: Number (default = 1024)
+PEER_PORT_RANDOM_LOW: 1024
+## peer-port-random-on-start: Boolean (default = false)
+PEER_PORT_RANDOM_ON_START: true
+## port-forwarding-enabled: Boolean (default = true) Enable UPnP or NAT-PMP.
+PORT_FORWARDING_ENABLED: true
+
+## QUEUING
+## =======
+## download-queue-enabled: Boolean (default = true) When true, Transmission will only download download-queue-size non-stalled torrents at once.
+DOWNLOAD_QUEUE_ENABLED: true
+## download-queue-size: Number (default = 5) See download-queue-enabled.
+DOWNLOAD_QUEUE_SIZE: 5
+## queue-stalled-enabled: Boolean (default = true) When true, torrents that have not shared data for queue-stalled-minutes are treated as 'stalled' and are not counted against the queue-download-size and seed-queue-size limits.
+QUEUE_STALLED_ENABLED: true
+## queue-stalled-minutes: Number (default = 30) See queue-stalled-enabled.
+QUEUE_STALLED_MINUTES: 30
+## seed-queue-enabled: Boolean (default = false) When true. Transmission will only seed seed-queue-size non-stalled torrents at once.
+SEED_QUEUE_ENABLED: false
+## seed-queue-size: Number (default = 10) See seed-queue-enabled.
+SEED_QUEUE_SIZE: 10
+
+## RPC
+## ===
+## rpc-authentication-required: Boolean (default = false)
+RPC_AUTHENTICATION_REQUIRED: true
+## rpc-bind-address: String (default = "0.0.0.0") Where to listen for RPC connections
+RPC_BIND_ADDRESS: "0.0.0.0"
+## rpc-enabled: Boolean (default = true)
+RPC_ENABLED: true
+## rpc-host-whitelist: String (Comma-delimited list of domain names. Wildcards allowed using '*'. Example: "*.foo.org,example.com", Default: "", Always allowed: "localhost", "localhost.", all the IP addresses. Added in v2.93)
+RPC_HOST_WHITELIST: "localhost"
+## rpc-host-whitelist-enabled: Boolean (default = true. Added in v2.93)
+RPC_HOST_WHITELIST_ENABLED: true
+## rpc-password: String
+RPC_PASSWORD: "password"
+## rpc-port: Number (default = 9091)
+RPC_PORT: 9091
+## rpc-url: String (default = /transmission/. Added in v2.2)
+RPC_URL: "/transmission/"
+## rpc-username: String
+RPC_USERNAME: "pvr"
+## rpc-whitelist: String (Comma-delimited list of IP addresses. Wildcards allowed using '*'. Example: "127.0.0.*,192.168.*.*", Default: "127.0.0.1")
+RPC_WHITELIST: "192.168.0.*"
+## rpc-whitelist-enabled: Boolean (default = true)
+RPC_WHITELIST_ENABLED: true
+
+## SCHEDULING
+## ==========
+## alt-speed-time-enabled: Boolean (default = false)
+## Note: When enabled, this will toggle the alt-speed-enabled setting.
+ALT_SPEED_TIME_ENABLED: true
+## alt-speed-time-begin: Number (default = 540, in minutes from midnight, 9am)
+ALT_SPEED_TIME_BEGIN: 540
+## alt-speed-time-end: Number (default = 1020, in minutes from midnight, 5pm)
+ALT_SPEED_TIME_END: 1020
+## alt-speed-time-day: Number/bitfield (default = 127, all days)
+  ## Start with 0, then for each day you want the scheduler enabled, add:
+  ## Sunday: 1 (binary: 0000001)
+  ## Monday: 2 (binary: 0000010)
+  ## Tuesday: 4 (binary: 0000100)
+  ## Wednesday: 8 (binary: 0001000)
+  ## Thursday: 16 (binary: 0010000)
+  ## Friday: 32 (binary: 0100000)
+  ## Saturday: 64 (binary: 1000000)
+  ## Examples:
+  ## Weekdays: 62 (binary: 0111110)
+  ## Weekends: 65 (binary: 1000001)
+  ## All Days: 127 (binary: 1111111)
+ALT_SPEED_TIME_DAY: 127
+## idle-seeding-limit: Number (default = 30) Stop seeding after being idle for N minutes.
+IDLE_SEEDING_LIMIT: 30
+## idle-seeding-limit-enabled: Boolean (default = false)
+IDLE_SEEDING_LIMIT_ENABLED: false
+## ratio-limit: Number (default = 2.0)
+RATIO_LIMIT: 2.0
+## ratio-limit-enabled: Boolean (default = false)
+RATIO_LIMIT_ENABLED: false
+
+## https://github.com/transmission/transmission/wiki/Editing-Configuration-Files

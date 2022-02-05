@@ -2,6 +2,7 @@
     "cSpell.words": [
         "autoclean",
         "autoremove",
+        "bitfield",
         "blkid",
         "cifs",
         "fstype",
@@ -15,6 +16,8 @@
         "playbook",
         "posix",
         "powerline",
+        "setgid",
+        "setuid",
         "smbclient",
         "smbcredentials",
         "timezone",

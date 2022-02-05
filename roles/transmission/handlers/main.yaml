@@ -1,0 +1,8 @@
+- name: transmission reload
+  service:
+    name: transmission-daemon
+    state: reloaded
+
+- name: ufw reload
+  ufw:
+    state: reloaded
