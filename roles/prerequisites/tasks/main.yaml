@@ -10,8 +10,8 @@
 - name: Setup firewall
   import_tasks: firewall.yaml
 
-- name: Setup default user
-  import_tasks: default_user.yaml
+- name: Setup users
+  import_tasks: users.yaml
 
 - name: Mount USB Stick
   import_tasks: usb_stick.yaml

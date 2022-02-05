@@ -14,3 +14,15 @@
     user: "{{ DEFAULT_USER }}"
     state: present
     key: "{{ DEFAULT_USER_PUB }}"
+
+- name: "Create {{ PVR_USERNAME }} with UID {{ PVR_UID }} and GID {{ PVR_GID }}"
+  ansible.builtin.user:
+    name: "{{ PVR_USERNAME }}"
+    password: "{{ PVR_PASSWORD | password_hash('sha512') }}"
+    update_password: on_create
+    shell: /bin/zsh
+    uid: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    append: yes
+    groups:
+      - nogroup
