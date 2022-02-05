@@ -1,5 +1,4 @@
 TZ: 'UTC'
-ANSIBLE_USER: "ansible"
 INIT_PACKAGES: [ 'bash', 'curl', 'wget', 'net-tools', 'build-essential', 'git']
 DEFAULT_USER: "default"
 DEFAULT_USER_PUB: "** replace with contents of `cat ~/.ssh/id_rsa.pub **"
@@ -7,3 +6,21 @@ USB_MOUNT_POINT: "/media/local_usb"
 PIA_CONFIG: "** Replace with VPN Server Location **"
 PIA_USERNAME: "** Replace with PIA VPN Access Username **"
 PIA_PASSWORD: "** Replace with PIA VPN Access Password **"
+NAS_NAME: "** Replace with nas_computer_name **"
+PVR_USERNAME: "pvr"
+PVR_PASSWORD: "** Replace with pvr user password"
+PVR_UID: "** Replace with NAS NFS UID"
+MOUNT_PATHS:
+  - '/media/Downloads'
+  - '/media/TV Shows'
+  - '/media/Movies'
+  - '/media/Music'
+  - '/media/Books'
+  - '/media/Audiobooks'
+NFS_MOUNTS:
+  - { src: /Downloads, path: /media/Downloads }
+  - { src: /TV Shows, path: /media/TV Shows }
+  - { src: /Movies, path: /media/Movies }
+  - { src: /Music, path: /media/Music }
+  - { src: /Books, path: /media/Books }
+  - { src: /Audiobooks, path: /media/Audiobooks }

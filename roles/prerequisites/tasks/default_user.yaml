@@ -5,7 +5,9 @@
     update_password: on_create
     shell: /bin/bash
     append: yes
-    groups: sudo
+    groups: 
+      - sudo
+      - users
 
 - name: "Set authorized key for default user {{ DEFAULT_USER }}"
   ansible.posix.authorized_key:
