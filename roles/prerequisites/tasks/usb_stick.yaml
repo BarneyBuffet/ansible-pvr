@@ -14,7 +14,20 @@
     src: "UUID={{ uuid.stdout }}"
     path: "{{ USB_MOUNT_POINT }}"
     fstype: vfat
-    opts: defaults
+    opts: rw,defaults,umask=000
     dump: 0
     passno: 2
     state: mounted
+
+- name: Create pvr directory on USB stick
+  file:
+    path: "{{ USB_MOUNT_POINT }}/pvr"
+    state: directory
+
+- name: "Symbolic link /home/{{ PVR_USERNAME }}/.config to {{ USB_MOUNT_POINT }}/pvr"
+  file:
+    src: "{{ USB_MOUNT_POINT }}/pvr"
+    dest: "/home/{{ PVR_USERNAME }}/.config"
+    # owner: "{{ PVR_UID }}"
+    # group: "{{ PVR_GID }}"
+    state: link
