@@ -1,4 +1,4 @@
-## 01-openvpn.yaml
+## 01-transmission.yaml
 ## ansible-playbook 01-transmission.yaml -i inventory/hosts.ini
 ---
 - name: Transmission
@@ -6,4 +6,4 @@
   gather_facts: no
   become: yes
   roles:
-    - role: Transmission
+    - role: transmission

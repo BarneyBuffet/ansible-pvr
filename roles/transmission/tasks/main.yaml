@@ -21,40 +21,63 @@
     comment: Allow Transmission Web
   notify: ufw reload
 
-- name: "Set setuid {{ PVR_UID }} in /etc/init/transmission-daemon.conf"
-  ansible.builtin.lineinfile:
-    path: '/etc/init/transmission-daemon.conf'
-    state: present
-    regexp: '^setuid'
-    line: 'setuid {{ PVR_UID }}'
+- name: Allow Transmission peer port
+  community.general.ufw:
+    rule: allow
+    port: '{{ PEER_PORT }}'
+    proto: tcp
+    comment: Allow Transmission peer port
+  notify: ufw reload
 
-- name: "Set setgid {{ PVR_GID }} in /etc/init/transmission-daemon.conf"
+- name: Create a supplement file directory for transmission
+  ansible.builtin.file:
+    path: /etc/systemd/system/transmission-daemon.service.d
+    state: directory
+
+- name: Copy run-as-user.conf supplement file into directory
+  template:
+    src: run-as-user.conf.j2
+    dest: /etc/systemd/system/transmission-daemon.service.d/run-as-user.conf
+
+- name: Tell systemd to reload units.
+  shell: |
+    sudo systemctl daemon-reload
+
+- name: "Set setuid {{ PVR_UID }} in /etc/init.d/transmission-daemon"
   ansible.builtin.lineinfile:
-    path: '/etc/init/transmission-daemon.conf'
+    path: /etc/init.d/transmission-daemon
     state: present
-    regexp: '^setgid'
-    line: 'setgid {{ PVR_GID }}'
+    regexp: '^USER='
+    line: 'USER= {{ PVR_UID }}'
+
+# - name: "Set setuid {{ PVR_UID }} in /etc/init/transmission-daemon.conf"
+#   ansible.builtin.lineinfile:
+#     path: '/etc/init/transmission-daemon.conf'
+#     state: present
+#     regexp: '^setuid'
+#     line: 'setuid {{ PVR_UID }}'
+
+# - name: "Set setgid {{ PVR_GID }} in /etc/init/transmission-daemon.conf"
+#   ansible.builtin.lineinfile:
+#     path: '/etc/init/transmission-daemon.conf'
+#     state: present
+#     regexp: '^setgid'
+#     line: 'setgid {{ PVR_GID }}'
+
+- name: "Copy Transmission init to /etc/init/transmission-daemon.conf"
+  template:
+    src: transmission-daemon.conf.j2
+    dest: /etc/init/transmission-daemon.conf
+
+- name: Create transmission-daemon config folder
+  ansible.builtin.file:
+    path: "/home/{{ PVR_USERNAME }}/.config/transmission-daemon"
+    state: directory
 
 - name: "Copy Transmission configuration to /home/{{ PVR_USERNAME }}/.config/transmission-daemon/settings.json"
   template:
     src: settings.json.j2
     dest: /home/{{ PVR_USERNAME }}/.config/transmission-daemon/settings.json
-    owner: "{{ PVR_UID }}"
-    group: "{{ PVR_GID }}"
-
-# - name: "Change transmission-daemon systemd user"
-#   ini_file:
-#     path: /etc/systemd/system/transmission-daemon.service.d/run-as-user.conf
-#     section: Service
-#     option: User
-#     value: "{{ PVR_UID }}"
-
-# - name: "Change transmission-daemon systemd timer group"
-#   ini_file:
-#     path: /etc/systemd/system/transmission-daemon.service.d/group.conf
-#     section: Service
-#     option: Group
-#     value: "{{ PVR_GID }}"
 
 - name: Add users to transmission group
   user:
@@ -65,7 +88,7 @@
     - "{{ DEFAULT_USER }}"
     - "{{ PVR_USERNAME }}"
 
-- name: Add users to transmission group
+- name: "Add debian-transmission to {{ PVR_GID }}"
   user:
     name: debian-transmission
     groups: " {{ PVR_GID }}" 
@@ -75,3 +98,10 @@
   systemd:
     name: transmission-daemon
     state: started
+
+- name: Restart systemd daemons
+  shell: |
+    systemctl daemon-reload
+
+## https://unix.stackexchange.com/questions/624899/transmission-daemon-running-under-custom-user-trying-to-load-config-from-wrong-p
+## https://www.golinuxcloud.com/run-systemd-service-specific-user-group-linux/
