@@ -51,6 +51,15 @@
     mode: 400
   notify: server reboot
 
+## This is a windows only option
+# - name: Block outside DNS through OpnVPN
+#   ansible.builtin.lineinfile:
+#     path: /etc/openvpn/pia.conf
+#     state: present
+#     regexp: "^block-outside-dns"
+#     line: "block-outside-dns"
+#   notify: server reboot
+
 - name: Autostart OpenVPN
   ansible.builtin.lineinfile:
     path: /etc/default/openvpn
@@ -60,10 +69,12 @@
   notify: server reboot
 
 - name: Clean up PIA directory
-  file:
+  ansible.builtin.file:
     state: absent
     path: /home/{{ ansible_user }}/Downloads/PIA
 
 ## References
 ## https://medium.com/@cubxi/connect-to-private-internet-access-pia-vpn-with-openvpn-on-ubuntu-3f8091d61f24
 ## https://gist.github.com/laineantti/176b1a12d49e4048e39d4523b589b666
+## Check IP: curl https://ipinfo.io/ip
+## Check Torrent IP: https://torguard.net/checkmytorrentipaddress.php

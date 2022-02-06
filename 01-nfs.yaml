@@ -1,5 +1,5 @@
-## 01-openvpn.yaml
-## ansible-playbook 01-shares.yaml -i inventory/hosts.ini
+## 01-nfs.yaml
+## ansible-playbook 01-nfs.yaml -i inventory/hosts.ini
 ---
 - name: NFS Shares
   hosts: pvr
