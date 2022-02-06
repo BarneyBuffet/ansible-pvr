@@ -7,3 +7,5 @@
   become: yes
   roles:
     - role: transmission
+
+## Check Torrent IP: https://torguard.net/checkmytorrentipaddress.php
