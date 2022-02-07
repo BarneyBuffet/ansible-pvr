@@ -1,4 +1,4 @@
-- name: Install Lidarr dependencies
+- name: Install readarr dependencies
   ansible.builtin.apt: 
     name: "{{ item }}"
     state: latest
@@ -8,7 +8,6 @@
   with_items:
     - gnupg
     - ca-certificates
-    - libchromaprint-tools
 
 - name: Add Mono apt key from keyserver.ubuntu.com
   ansible.builtin.apt_key:
@@ -28,17 +27,17 @@
     autoclean: yes
     autoremove: yes
 
-- name: Create /opt/lidarr directory
+- name: Create /opt/readarr directory
   ansible.builtin.file:
-    path: /opt/lidarr
+    path: /opt/readarr
     state: directory
     owner: "{{ PVR_UID }}"
     group: "{{ PVR_GID }}"
 
-- name: Download and unzip lidarr to /opt/lidarr
+- name: Download and unzip readarr to /opt/readarr
   ansible.builtin.unarchive:
-    src: "http://lidarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=arm64"
-    dest: /opt/lidarr
+    src: "http://readarr.servarr.com/v1/update/nightly/updatefile?os=linux&runtime=netcore&arch=arm64"
+    dest: /opt/readarr
     owner: "{{ PVR_UID }}"
     group: "{{ PVR_GID }}"
     remote_src: yes
@@ -47,31 +46,31 @@
 
 # - name: Update file permissions
 #   file:
-#     path: /opt/lidarr
+#     path: /opt/readarr
 #     owner: "{{ PVR_UID }}"
 #     group: "{{ PVR_GID }}"
 #     recurse: yes
 
-- name: "Create lidarr working directory /home/{{ PVR_USERNAME }}/.config/lidarr"
+- name: "Create readarr working directory /home/{{ PVR_USERNAME }}/.config/readarr"
   ansible.builtin.file:
-    path: "/home/{{ PVR_USERNAME }}/.config/lidarr"
+    path: "/home/{{ PVR_USERNAME }}/.config/readarr"
     state: directory
 
-- name: Make sure lidarr daemon is not running before modifying
+- name: Make sure readarr daemon is not running before modifying
   service:
-    name: lidarr
+    name: readarr
     state: stopped
   ignore_errors: true
 
-- name: Copy lidarr daemon service file
+- name: Copy readarr daemon service file
   template:
-    src: lidarr.service.j2
-    dest: /etc/systemd/system/lidarr.service
+    src: readarr.service.j2
+    dest: /etc/systemd/system/readarr.service
     mode: 0644
 
-- name: Start lidarr service
+- name: Start readarr service
   systemd:
-    name: lidarr.service
+    name: readarr.service
     enabled: yes
     daemon_reload: yes
     state: started

@@ -143,7 +143,7 @@ RPC_URL: "/transmission/"
 ## rpc-username: String
 RPC_USERNAME: "pvr"
 ## rpc-whitelist: String (Comma-delimited list of IP addresses. Wildcards allowed using '*'. Example: "127.0.0.*,192.168.*.*", Default: "127.0.0.1")
-RPC_WHITELIST: "192.168.0.*"
+RPC_WHITELIST: "192.168.0.*,127.0.0.1"
 ## rpc-whitelist-enabled: Boolean (default = true)
 RPC_WHITELIST_ENABLED: true
 

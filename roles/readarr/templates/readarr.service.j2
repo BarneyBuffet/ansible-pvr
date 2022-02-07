@@ -1,0 +1,16 @@
+[Unit]
+Description=Readarr Daemon
+After=syslog.target network.target
+
+[Service]
+User={{ PVR_UID }}
+Group={{ PVR_GID }}
+Type=simple
+
+ExecStart=/opt/readarr/Readarr -nobrowser -data=/home/{{ PVR_USERNAME }}/.config/readarr
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

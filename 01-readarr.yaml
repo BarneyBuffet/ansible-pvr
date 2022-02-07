@@ -1,0 +1,9 @@
+## 01-readarr.yaml
+## ansible-playbook 01-readarr.yaml -i inventory/hosts.ini
+---
+- name: Readarr
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: readarr
