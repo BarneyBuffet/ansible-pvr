@@ -1,0 +1,5 @@
+- name: jackett restart
+  systemd: 
+    name: jackett.service
+    state: restarted
+    daemon-reload: yes

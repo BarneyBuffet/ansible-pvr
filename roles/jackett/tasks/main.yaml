@@ -1,0 +1,94 @@
+- name: Install Jackett dependencies
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+  with_items:
+    - gnupg
+    - ca-certificates
+
+- name: Add Mono apt key from keyserver.ubuntu.com
+  ansible.builtin.apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+- name: Add Mono repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.mono-project.com/repo/ubuntu stable-focal main
+    state: present
+
+- name: Install mono-devel package
+  ansible.builtin.apt: 
+    name: mono-devel
+    state: latest
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Create /opt/jackett directory
+  ansible.builtin.file:
+    path: /opt/jackett
+    state: directory
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+
+- name: Download and unzip Jackett to /opt/jackett
+  ansible.builtin.unarchive:
+    src: "https://github.com/Jackett/Jackett/releases/download/{{ JACKET_VERSION }}/Jackett.Binaries.LinuxARM64.tar.gz"
+    dest: /opt/jackett
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+
+- name: Update file permissions
+  file:
+    path: /opt/jackett
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    recurse: yes
+
+- name: Make sure Jackett daemon is not running before modifying
+  service:
+    name: jackett
+    state: stopped
+  ignore_errors: true
+
+- name: Copy Jackett daemon service file
+  template:
+    src: jackett.service.j2
+    dest: /etc/systemd/system/jackett.service
+    mode: 0644
+  # notify:
+  #   - jackett restart
+
+## Jackett overwrites any config changes even when off
+# - name: "Copy Jackett server config to /home/{{ PVR_USERNAME }}/.config/Jackett/ServerConfig.json"
+#   template:
+#     src: ServerConfig.json.j2
+#     dest: "/home/{{ PVR_USERNAME }}/.config/Jackett/ServerConfig.json"
+#     mode: 0777
+#   # notify:
+  #   - jackett restart
+
+# - name: Install Jackett as a service
+#   ansible.builtin.shell: |
+#     sh /opt/Jackett/install_service_systemd.sh
+
+# - name: Start Jackett daemon now config written
+#   systemd:
+#     name: jackett
+#     state: started
+
+- name: Start Jackett service
+  systemd:
+    name: jackett.service
+    enabled: yes
+    daemon_reload: yes
+    state: started
+
+## Reference
+## https://varhowto.com/install-jackett-ubuntu-20-04/

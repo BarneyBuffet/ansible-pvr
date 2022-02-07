@@ -1,0 +1,9 @@
+## 01-jackett.yaml
+## ansible-playbook 01-jackett.yaml -i inventory/hosts.ini
+---
+- name: Jackett
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: jackett
