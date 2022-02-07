@@ -1,0 +1,9 @@
+## 01-lidarr.yaml
+## ansible-playbook 01-lidarr.yaml -i inventory/hosts.ini
+---
+- name: Lidarr
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: lidarr

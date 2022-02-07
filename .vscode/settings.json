@@ -9,6 +9,7 @@
         "devel",
         "fstype",
         "iocharset",
+        "lidarr",
         "lineinfile",
         "Mediainfo",
         "nogroup",

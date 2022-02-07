@@ -1,0 +1,76 @@
+- name: Install Lidarr dependencies
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+  with_items:
+    - gnupg
+    - ca-certificates
+
+- name: Add Mono apt key from keyserver.ubuntu.com
+  ansible.builtin.apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+- name: Add Mono repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.mono-project.com/repo/ubuntu stable-focal main
+    state: present
+
+- name: Install mono-devel package
+  ansible.builtin.apt: 
+    name: mono-devel
+    state: latest
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Create /opt/lidarr directory
+  ansible.builtin.file:
+    path: /opt/lidarr
+    state: directory
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+
+- name: Download and unzip lidarr to /opt/lidarr
+  ansible.builtin.unarchive:
+    src: "http://lidarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=arm64"
+    dest: /opt/lidarr
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+
+# - name: Update file permissions
+#   file:
+#     path: /opt/lidarr
+#     owner: "{{ PVR_UID }}"
+#     group: "{{ PVR_GID }}"
+#     recurse: yes
+
+- name: "Create lidarr working directory /home/{{ PVR_USERNAME }}/.config/lidarr"
+  ansible.builtin.file:
+    path: "/home/{{ PVR_USERNAME }}/.config/lidarr"
+    state: directory
+
+- name: Make sure lidarr daemon is not running before modifying
+  service:
+    name: lidarr
+    state: stopped
+  ignore_errors: true
+
+- name: Copy lidarr daemon service file
+  template:
+    src: lidarr.service.j2
+    dest: /etc/systemd/system/lidarr.service
+    mode: 0644
+
+- name: Start lidarr service
+  systemd:
+    name: lidarr.service
+    enabled: yes
+    daemon_reload: yes
+    state: started
