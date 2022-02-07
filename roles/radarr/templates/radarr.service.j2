@@ -1,0 +1,16 @@
+[Unit]
+Description=radarr
+After=syslog.target network.target
+
+[Service]
+User={{ PVR_UID }}
+Group={{ PVR_GID }}
+Type=simple
+
+ExecStart=/opt/radarr/Radarr -nobrowser -data=/home/{{ PVR_USERNAME }}/.config/radarr
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+## 01-radarr.yaml
+## ansible-playbook 01-radarr.yaml -i inventory/hosts.ini
+---
+- name: Radarr
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: radarr

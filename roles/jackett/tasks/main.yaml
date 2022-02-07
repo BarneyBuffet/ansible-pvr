@@ -62,15 +62,6 @@
     src: jackett.service.j2
     dest: /etc/systemd/system/jackett.service
     mode: 0644
-  # notify:
-  #   - sonarr restart
-
-- name: Create Sonarr config directory 
-  ansible.builtin.file:
-    path: /home/{{ PVR_USERNAME }}/.config/sonarr
-    state: directory
-    owner: "{{ PVR_UID }}"
-    group: "{{ PVR_GID }}"
 
 ## Jackett overwrites any config changes even when off
 # - name: "Copy Jackett server config to /home/{{ PVR_USERNAME }}/.config/Jackett/ServerConfig.json"

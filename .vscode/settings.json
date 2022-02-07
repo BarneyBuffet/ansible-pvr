@@ -20,6 +20,7 @@
         "playbook",
         "posix",
         "powerline",
+        "radarr",
         "setgid",
         "setuid",
         "smbclient",
