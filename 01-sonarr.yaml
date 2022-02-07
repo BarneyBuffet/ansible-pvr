@@ -1,0 +1,9 @@
+## 01-sonarr.yaml
+## ansible-playbook 01-sonarr.yaml -i inventory/hosts.ini
+---
+- name: Sonarr
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: sonarr

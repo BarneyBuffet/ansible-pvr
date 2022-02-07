@@ -1,0 +1,74 @@
+- name: Add apt keys to keyserver.ubuntu.com
+  ansible.builtin.apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  loop:
+    - 2009837CBFFD68F45BC180471F4F90DE2A9B4BF8  # Sonarr
+    - 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF  # Mono
+
+# - name: Import MediaInfo GPG Key
+#   apt_key:
+#     url: https://mediaarea.net/repo/deb/debian/pubkey.gpg
+#     state: present
+
+- name: Add apt repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - "deb https://download.mono-project.com/repo/ubuntu focal main"
+    # - "deb https://apt.sonarr.tv/ubuntu focal main"
+    - "deb http://apt.sonarr.tv/ master main"
+    #- "deb https://mediaarea.net/repo/deb/ubuntu focal main"
+
+
+# - name: Add Sonarr apt key from keyserver.ubuntu.com
+#   ansible.builtin.apt_key:
+#     keyserver: keyserver.ubuntu.com
+#     id: "2009837CBFFD68F45BC180471F4F90DE2"
+
+## https://mediaarea.net/download/binary/mediainfo/21.09/mediainfo_21.09-1_amd64.xUbuntu_21.04.deb
+# - name: Install Mediainfo .deb package from the internet
+#   ansible.builtin.apt:
+#     deb: https://mediaarea.net/repo/deb/repo-mediaarea_1.0-19_all.deb 
+
+- name: Install dependencies and sonarr packages
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+  with_items:
+    - gnupg
+    - ca-certificates
+    - mono-devel
+    - mediainfo
+    - sonarr
+
+- name: Make sure Sonarr daemon is not running before modifying
+  service:
+    name: sonarr
+    state: stopped
+  ignore_errors: true
+
+- name: Copy Sonar daemon service file
+  template:
+    src: sonarr.service.j2
+    dest: /usr/lib/systemd/system/sonarr.service
+    mode: 0644
+
+- name: Change file owner ship on /usr/lib/sonarr
+  file:
+    path: "/usr/lib/sonarr"
+    state: directory
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+
+
+- name: Start sonarr service
+  systemd:
+    name: sonarr.service
+    enabled: yes
+    daemon_reload: yes
+    state: started
