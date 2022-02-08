@@ -1,0 +1,40 @@
+- name: Install Nginx package
+  ansible.builtin.apt: 
+    name: "{{ item }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+  with_items:
+    - nginx
+
+# - name: Disable default Nginx default virtual hosts
+#   shell: |
+#     unlink /etc/nginx/sites-enabled/default
+
+- name: Unlink default Nginx from enabled sites
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+    - nginx restart
+
+- name: Copy pvr reverse proxy config
+  template:
+    src: pvr.conf.j2
+    dest: /etc/nginx/sites-available/pvr.conf
+    mode: 0644
+  notify:
+    - nginx restart
+
+- name: Symbolic link pvr available to enabled Nginx sites
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/pvr.conf
+    dest: /etc/nginx/sites-enabled/pvr.conf
+    state: link
+  notify:
+    - nginx restart
+
+## service nginx configtest
+## sudo nginx -t
+
+## sudo systemctl restart nginx

@@ -1,0 +1,9 @@
+- name: nginx reload
+  ansible.builtin.service:
+    name: transmission-daemon
+    state: reloaded
+
+- name: nginx restart
+  ansible.builtin.service:
+    name: transmission-daemon
+    state: restarted

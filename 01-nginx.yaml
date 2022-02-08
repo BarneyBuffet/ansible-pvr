@@ -1,0 +1,9 @@
+## 01-nginx.yaml
+## ansible-playbook 01-nginx.yaml -i inventory/hosts.ini
+---
+- name: Nginx
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: nginx
