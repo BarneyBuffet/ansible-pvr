@@ -7,7 +7,7 @@ User={{ PVR_UID }}
 Group={{ PVR_GID }}
 Type=simple
 
-ExecStart=/opt/lidarr/Lidarr -nobrowser -data=/home/{{ PVR_USERNAME }}/.config/radarr
+ExecStart=/opt/lidarr/Lidarr -nobrowser -data=/home/{{ PVR_USERNAME }}/.config/lidarr
 TimeoutStopSec=20
 KillMode=process
 Restart=on-failure

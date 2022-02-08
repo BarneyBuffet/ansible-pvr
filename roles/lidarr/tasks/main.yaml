@@ -45,12 +45,12 @@
     extra_opts:
       - --strip-components=1
 
-# - name: Update file permissions
-#   file:
-#     path: /opt/lidarr
-#     owner: "{{ PVR_UID }}"
-#     group: "{{ PVR_GID }}"
-#     recurse: yes
+- name: Update file permissions
+  file:
+    path: /opt/lidarr
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    recurse: yes
 
 - name: "Create lidarr working directory /home/{{ PVR_USERNAME }}/.config/lidarr"
   ansible.builtin.file:

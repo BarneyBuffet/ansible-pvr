@@ -44,12 +44,12 @@
     extra_opts:
       - --strip-components=1
 
-# - name: Update file permissions
-#   file:
-#     path: /opt/readarr
-#     owner: "{{ PVR_UID }}"
-#     group: "{{ PVR_GID }}"
-#     recurse: yes
+- name: Update file permissions
+  file:
+    path: /opt/readarr
+    owner: "{{ PVR_UID }}"
+    group: "{{ PVR_GID }}"
+    recurse: yes
 
 - name: "Create readarr working directory /home/{{ PVR_USERNAME }}/.config/readarr"
   ansible.builtin.file:
