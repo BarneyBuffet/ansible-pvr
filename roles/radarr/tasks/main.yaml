@@ -55,8 +55,6 @@
   ansible.builtin.file:
     path: "/home/{{ PVR_USERNAME }}/.config/radarr"
     state: directory
-    # owner: "{{ PVR_UID }}"
-    # group: "{{ PVR_GID }}"
 
 - name: Make sure Radarr daemon is not running before modifying
   service:
