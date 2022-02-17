@@ -17,7 +17,7 @@
     state: present
   loop:
     - "deb https://download.mono-project.com/repo/ubuntu focal main"
-    - "deb http://apt.sonarr.tv/ master main"
+    - "deb https://apt.sonarr.tv/ubuntu focal main"
     #- "deb https://mediaarea.net/repo/deb/ubuntu focal main"
 
 ## https://mediaarea.net/download/binary/mediainfo/21.09/mediainfo_21.09-1_amd64.xUbuntu_21.04.deb
@@ -52,8 +52,9 @@
     mode: 0644
 
 - name: Change file ownership on /usr/lib/sonarr
-  file:
-    path: "/usr/lib/sonarr"
+  ansible.builtin.file:
+    dest: "/usr/lib/sonarr"
+    recurse: yes
     state: directory
     owner: "{{ PVR_UID }}"
     group: "{{ PVR_GID }}"

@@ -45,7 +45,7 @@
       - --strip-components=1
 
 - name: Update file permissions
-  file:
+  ansible.builtin.file:
     path: /opt/radarr
     owner: "{{ PVR_UID }}"
     group: "{{ PVR_GID }}"
@@ -57,19 +57,19 @@
     state: directory
 
 - name: Make sure Radarr daemon is not running before modifying
-  service:
+  ansible.builtin.systemd:
     name: radarr
     state: stopped
   ignore_errors: true
 
 - name: Copy Radarr daemon service file
-  template:
+  ansible.builtin.template:
     src: radarr.service.j2
     dest: /etc/systemd/system/radarr.service
     mode: 0644
 
 - name: Start Radarr service
-  systemd:
+  ansible.builtin.systemd:
     name: radarr.service
     enabled: yes
     daemon_reload: yes
