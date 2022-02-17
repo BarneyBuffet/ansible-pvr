@@ -1,0 +1,9 @@
+## 01-prowlarr.yaml
+## ansible-playbook 01-prowlarr.yaml -i inventory/hosts.ini
+---
+- name: Prowlarr
+  hosts: pvr
+  gather_facts: no
+  become: yes
+  roles:
+    - role: prowlarr

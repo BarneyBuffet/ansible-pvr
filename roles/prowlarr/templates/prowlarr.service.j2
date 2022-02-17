@@ -1,0 +1,16 @@
+[Unit]
+Description=Prowlarr Daemon
+After=syslog.target network.target
+
+[Service]
+User={{ PVR_UID }}
+Group={{ PVR_GID }}
+Type=simple
+
+ExecStart=/opt/prowlarr/Prowlarr -nobrowser -data=/home/{{ PVR_USERNAME }}/.config/prowlarr
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
