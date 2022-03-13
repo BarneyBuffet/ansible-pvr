@@ -40,7 +40,7 @@
     - sonarr
 
 - name: Make sure Sonarr daemon is not running before modifying
-  service:
+  ansible.builtin.systemd:
     name: sonarr
     state: stopped
   ignore_errors: true
@@ -65,7 +65,7 @@
     state: directory
 
 - name: Start sonarr service
-  systemd:
+  ansible.builtin.systemd:
     name: sonarr.service
     enabled: yes
     daemon_reload: yes
